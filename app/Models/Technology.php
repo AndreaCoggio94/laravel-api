@@ -13,6 +13,8 @@ class Technology extends Model
         "label","colour",
     ];
 
+    protected $hidden = ['pivot'];
+
     public function projects() {
         return $this->belongsToMany(Project::class);
     }
