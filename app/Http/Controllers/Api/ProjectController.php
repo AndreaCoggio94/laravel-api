@@ -16,9 +16,16 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::select('id','type_id','name')
+        $projects = Project::select('id','type_id','name','slug','description')
             ->with('technologies:id,colour,label','type:id,colour,name')
             ->paginate(12);
+
+        // foreach ($projects as $project) {
+            // $project->description = $project->getAbstract(200);
+            // if there was a cover image
+            // $project->cover_image = $project->getAbsUriImage();
+        // }
+
         return response()->json($projects);
     }
 
@@ -39,9 +46,17 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $project = Project::select('id','type_id','name','slug','description')
+            ->with('technologies:id,colour,label','type:id,colour,name')
+            ->where('slug', $slug)
+            ->first();
+
+            // if there was a cover image  
+            // $project->cover_image = $project->getAbsUriImage();
+
+        return response()->json($project);
     }
 
     /**
