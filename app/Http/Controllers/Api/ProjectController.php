@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Project;
+use App\Models\Type;
 
 class ProjectController extends Controller
 {
@@ -80,5 +81,23 @@ class ProjectController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function projectsByType($type_id)
+    {   
+        $type = Type::select('id','colour','name')
+            ->where('id', $type_id)
+            ->first();
+
+        if (!$type) {
+            abort(404, 'Type not found');
+        }
+
+        $projects = Project::select('id','type_id','name','slug','description')
+            ->with('technologies:id,colour,label','type:id,colour,name')
+            ->where('type', $type_id)
+            ->paginate(12);
+
+        return response()->json($projects, $type);
     }
 }
