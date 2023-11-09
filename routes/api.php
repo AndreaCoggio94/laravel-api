@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\TypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::apiResource('projects', ProjectController::class)->only('index','show');
-Route::get('/projects/type/{type_id}', [ProjectController::class, 'projectsByType']);
+
+Route::get('/portfolio-by-type/{type_id}', [ProjectController::class, 'portfolioByType']);
+
+Route::apiResource('type', TypeController::class)->only('show');

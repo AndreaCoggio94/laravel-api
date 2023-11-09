@@ -19,8 +19,12 @@ class ProjectController extends Controller
     {
         $projects = Project::select('id','type_id','name','slug','description')
             ->with('technologies:id,colour,label','type:id,colour,name')
+            ->orderBy('id')
             ->paginate(12);
 
+            if (!$projects) {
+                abort(404, 'Projects not found');
+            }    
         // foreach ($projects as $project) {
             // $project->description = $project->getAbstract(200);
             // if there was a cover image
@@ -54,6 +58,10 @@ class ProjectController extends Controller
             ->where('slug', $slug)
             ->first();
 
+            if (!$project) {
+                abort(404, 'Project not found');
+            }
+
             // if there was a cover image  
             // $project->cover_image = $project->getAbsUriImage();
 
@@ -83,21 +91,14 @@ class ProjectController extends Controller
         //
     }
 
-    public function projectsByType($type_id)
+    public function portfolioByType($type_id)
     {   
-        $type = Type::select('id','colour','name')
-            ->where('id', $type_id)
-            ->first();
-
-        if (!$type) {
-            abort(404, 'Type not found');
-        }
-
         $projects = Project::select('id','type_id','name','slug','description')
             ->with('technologies:id,colour,label','type:id,colour,name')
             ->where('type', $type_id)
+            ->orderBy('id')
             ->paginate(12);
 
-        return response()->json($projects, $type);
+       return response()->json($projects);
     }
 }
