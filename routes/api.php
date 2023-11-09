@@ -26,4 +26,4 @@ Route::apiResource('projects', ProjectController::class)->only('index','show');
 
 Route::get('/portfolio-by-type/{type_id}', [ProjectController::class, 'portfolioByType']);
 
-Route::apiResource('type', TypeController::class)->only('show');
+Route::apiResource('types', TypeController::class)->only('show');

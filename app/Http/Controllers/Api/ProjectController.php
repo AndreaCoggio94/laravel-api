@@ -95,7 +95,7 @@ class ProjectController extends Controller
     {   
         $projects = Project::select('id','type_id','name','slug','description')
             ->with('technologies:id,colour,label','type:id,colour,name')
-            ->where('type', $type_id)
+            ->where('type_id', $type_id)
             ->orderBy('id')
             ->paginate(12);
 
